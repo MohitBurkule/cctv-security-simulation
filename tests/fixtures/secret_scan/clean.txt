@@ -1,0 +1,2 @@
+nothing here
+salt_file: site.salt  # a mention, not a file

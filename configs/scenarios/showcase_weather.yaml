@@ -1,0 +1,34 @@
+schema_version: 1
+name: showcase_weather
+seed: 803
+duration_s: 5
+fps: 5
+engine: unreal
+environment: !include ../environments/border_fence.yaml
+cameras:
+  - {id: cam_01, type: fixed_bullet, mount: {pos: [-20, 3, 5], yaw: 90, pitch: -10}, optics: {hfov_deg: 45},
+     capture: {res: [1280, 720], fps: 5}}
+  - {id: cam_02, type: fixed_bullet, mount: {pos: [20, 3, 5], yaw: -90, pitch: -10}, optics: {hfov_deg: 45},
+     capture: {res: [1280, 720], fps: 5}}
+time_of_day: {start: "2026-09-27T18:00:00+00:00"}
+weather: {preset: rain, rain_intensity: 0.6, wet_ground: true, fog_density: 0.25, wind_mps: 4}
+population:
+  background: {count: 0}
+  hero:
+    - id: guard_1
+      role: guard
+      outfit: {top: uniform_shirt, outer: rain_poncho, bottom: uniform_trousers, headwear: cap}
+      intent: [{type: worker_patrol, route: route.fence_walk, period_s: 10}]
+    - id: intruder_wet
+      role: intruder
+      identity: {group: cell_1}
+      outfit: {top: dark_hoodie, bottom: dark_cargo}
+      intent:
+        - {type: transit, from: spawn.east, to: zone.fence_seg_5, gait: {style: brisk}}
+        - {type: fence_climb, segment: fence_seg_5, dur_s: [3, 6]}
+anomaly_injector: {enabled: false}
+output:
+  modalities: [rgb]
+  gt: [mot, world_parquet, events, calib]
+  # rain-on-lens is applied post-render by survsim/sensors/degrade.py, not baked into the beauty render
+  degrade_profiles: [clean, cctv_720p_rain, cctv_720p_fog]

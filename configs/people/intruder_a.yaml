@@ -1,0 +1,21 @@
+id: intruder_a
+role: intruder
+identity: {group: cell_1}
+body: {height_m: 1.81, shoulder_w: 0.47, bmi_class: athletic, skin_tone: 3, sex_presentation: m, age_band: 25-40}
+face: {metahuman: MH_Preset_017, beard: stubble, glasses: false}
+hair: {style: short, colour: dark_brown}
+outfit: {top: hoodie, outer: rain_jacket, bottom: cargo, shoes: boots, headwear: beanie,
+         colours: {top: "#3a3a3a", outer: "#0b3d91", bottom: "#4b4b3f"}, pattern: {top: plain}}
+accessories: [backpack_small, phone]
+gait: {style: normal, speed_mps: 1.35, arm_swing: 0.8, posture: upright}
+adversarial: {camera_awareness: 0.8, face_hiding: 0.6}
+change_events:
+  - {trigger: {zone: zone.blindspot_A}, delta: {outer: none, headwear: none}, gait: {style: limp_L}}
+  - {trigger: {t: 420}, delta: {face: {mask: true}}}
+rf: [{proto: wifi_probe, mac: random_rotating, interval_s: 20}]
+intent:
+  - {type: transit, from: spawn.east, to: zone.center}
+  - {type: recon, targets: [cam_01, cam_07, zone.restricted_stage], dwell_s: 4}
+  - {type: loiter_intermittent, zone: zone.gate_A, dur_s: 150, leave_return_n: 2, gap_s: 60}
+  - {type: camera_tamper, camera: cam_02, kind: spray}
+  - {type: transit, to: exit.west, gait: {style: brisk}}

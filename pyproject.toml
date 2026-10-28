@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "survsim"
+version = "0.1.0"
+description = "Photorealistic multi-camera, multi-person CCTV security simulator"
+requires-python = ">=3.10"
+license = "AGPL-3.0-or-later"
+dependencies = [
+  "numpy", "scipy", "pandas", "pyarrow", "pydantic>=2", "pyyaml",
+  "opencv-python-headless", "pillow", "imageio", "imageio-ffmpeg",
+  "matplotlib", "shapely", "networkx", "tqdm", "rich", "typer",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov", "pytest-xdist", "ruff", "scikit-learn"]
+unreal = ["unrealcv", "gymnasium"]
+
+[project.scripts]
+survsim = "survsim.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["survsim"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-m 'not slow'"
+markers = ["slow: >10 s; excluded by default, run with `pytest -m slow`"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint.per-file-ignores]
+# typer's idiomatic API requires typer.Option(...) as an argument default.
+"survsim/cli.py" = ["B008"]

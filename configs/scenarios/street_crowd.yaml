@@ -1,0 +1,67 @@
+# Render demo: a busy plaza at CCTV standoff. 18 people from the population
+# generators around one hero pair (loiterer + commute_wait hard negative), three
+# cameras at real mounts (3.5-5 m high, 15-30 deg down, 70-95 deg HFOV = 2.8-4 mm
+# on 1/3") so people are 60-200 px tall. Used by tools/render_batch.py.
+schema_version: 1
+name: street_crowd
+seed: 7
+duration_s: 60
+fps: 10
+engine: mock
+
+environment:
+  id: street_plaza
+  zones:
+    - {id: zone.gate_A, tag: gate, polygon: [[6, -3], [12, -3], [12, 3], [6, 3]]}
+    - {id: zone.yard, tag: public, polygon: [[-16, -16], [16, -16], [16, 16], [-16, 16]]}
+  spawn_points:
+    - {id: spawn.north, pos: [0.0, 16.0, 0.0]}
+    - {id: spawn.east, pos: [16.0, 0.0, 0.0]}
+  exits:
+    - {id: exit.south, pos: [0.0, -16.0, 0.0]}
+    - {id: exit.west, pos: [-16.0, 0.0, 0.0]}
+
+cameras:
+  - id: cam_01
+    type: fixed_bullet
+    mount: {pos: [14.0, -10.0, 4.0], yaw: 140, pitch: -20}
+    optics: {hfov_deg: 78}
+    capture: {res: [1280, 720], fps: 10}
+  - id: cam_02
+    type: dome
+    mount: {pos: [-12.0, 8.0, 3.5], yaw: -35, pitch: -25}
+    optics: {hfov_deg: 95}
+    capture: {res: [1280, 720], fps: 10}
+  - id: cam_03
+    type: fixed_bullet
+    mount: {pos: [-12.0, -12.0, 5.0], yaw: 45, pitch: -18}
+    optics: {hfov_deg: 70}
+    capture: {res: [1280, 720], fps: 10}
+
+population:
+  hero:
+    - id: loiterer_1
+      role: intruder
+      body: {height_m: 1.8, skin_tone: 3, sex_presentation: m, age_band: 25-40}
+      gait: {style: normal, speed_mps: 1.3}
+      intent:
+        - {type: transit, from: spawn.east, to: zone.gate_A}
+        - {type: loiter, zone: zone.gate_A, dur_s: 25, activity: pace, radius_m: 2.5}
+        - {type: transit, to: exit.west}
+    - id: commuter_1
+      role: commuter
+      hard_negative_for: [loiter]
+      body: {height_m: 1.65, skin_tone: 7, sex_presentation: f, age_band: 25-40}
+      gait: {style: normal, speed_mps: 1.2}
+      intent:
+        - {type: transit, from: spawn.north, to: zone.gate_A}
+        - {type: commute_wait, zone: zone.gate_A, dur_s: 25, activity: idle}
+        - {type: transit, to: exit.south}
+  generators:
+    - {template: passer_by, count: 12, zones: [zone.yard]}
+    - {template: commute_wait_negative, count: 3, zones: [zone.gate_A], dur_s: [20, 40]}
+    - {template: loiterer, count: 1, zones: [zone.gate_A], dur_s: [30, 50]}
+
+output:
+  modalities: [rgb]
+  gt: [mot, events, world_parquet, calib, identities]

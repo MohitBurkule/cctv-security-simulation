@@ -1,0 +1,19 @@
+{
+	"FileVersion": 3,
+	"EngineAssociation": "",
+	"Category": "",
+	"Description": "SurvSim offline render target project",
+	"Plugins": [
+		{ "Name": "PythonScriptPlugin", "Enabled": true },
+		{ "Name": "SequencerScripting", "Enabled": true },
+		{ "Name": "MovieRenderPipeline", "Enabled": true },
+		{ "Name": "EditorScriptingUtilities", "Enabled": true },
+		{ "Name": "RigLogic", "Enabled": true },
+		{ "Name": "MetaHumanSDK", "Enabled": true },
+		{ "Name": "MetaHumanCharacter", "Enabled": true },
+		{ "Name": "MetaHumanCharacterUAF", "Enabled": true },
+		{ "Name": "MetaHumanGenerator", "Enabled": true },
+		{ "Name": "MetaHumanCrowd", "Enabled": true },
+		{ "Name": "MetaHumanRuntime", "Enabled": true }
+	]
+}

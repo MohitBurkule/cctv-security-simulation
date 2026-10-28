@@ -1,0 +1,7 @@
+{"version": 1, "root": "/nonexistent", "assets": [
+ {"kind": "character", "name": "man_hmnu", "path": "characters/quaternius/man_HMnuH5geEG.glb", "format": "glb", "license": "CC0-1.0", "license_url": "https://creativecommons.org/publicdomain/zero/1.0/", "source_url": "https://poly.pizza/m/HMnuH5geEG", "anim_clips": ["HumanArmature|Man_Idle", "HumanArmature|Man_Walk"], "height_m": 1.9},
+ {"kind": "vehicle", "name": "kenney_sedan", "path": "kenney/car-kit/Models/GLB format/sedan.glb", "format": "glb", "license": "CC0-1.0", "license_url": "https://creativecommons.org/publicdomain/zero/1.0/", "source_url": "https://kenney.nl/assets/car-kit", "anim_clips": [], "size_m": [1.5, 1.3, 2.55]},
+ {"kind": "prop", "name": "bench", "path": "props/quaternius/bench.glb", "format": "glb", "license": "CC0-1.0", "license_url": "https://creativecommons.org/publicdomain/zero/1.0/", "source_url": "https://poly.pizza/m/7uSlZo3n9Y", "anim_clips": [], "size_m": [2.0, 1.0, 0.8]},
+ {"kind": "texture", "name": "Asphalt033", "path": "textures/ambientcg/Asphalt033", "format": "jpg", "license": "CC0-1.0", "license_url": "https://docs.ambientcg.com/license/", "source_url": "https://ambientcg.com/view?id=Asphalt033", "anim_clips": [], "resolution": [1024, 1024]},
+ {"kind": "hdri", "name": "kloofendal_overcast", "path": "hdri/polyhaven/kloofendal_overcast_2k.hdr", "format": "hdr", "license": "CC0-1.0", "license_url": "https://polyhaven.com/license", "source_url": "https://polyhaven.com/a/kloofendal_overcast", "anim_clips": [], "resolution": [2048, 1024]}
+]}

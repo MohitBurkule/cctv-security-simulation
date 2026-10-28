@@ -1,0 +1,72 @@
+# Minimal end-to-end scenario for the mock backend: no GPU, a few seconds to run.
+# Pairs a loiterer with a commuter who waits just as long — the hard negative that
+# a dwell-time rule cannot separate.
+schema_version: 1
+name: smoke_mock
+seed: 1
+duration_s: 60
+fps: 10
+engine: mock
+
+environment:
+  id: smoke_yard
+  zones:
+    - {id: zone.gate_A, tag: gate, polygon: [[8, -3], [14, -3], [14, 3], [8, 3]]}
+    - {id: zone.yard, tag: public, polygon: [[-20, -20], [20, -20], [20, 20], [-20, 20]]}
+    # unfenced store front: the courier walks in to drop the bag (fences: director/fences.py)
+    - {id: zone.store, tag: restricted, fenced: false, polygon: [[-18, 8], [-10, 8], [-10, 16], [-18, 16]]}
+  spawn_points:
+    - {id: spawn.north, pos: [0.0, 18.0, 0.0]}
+    - {id: spawn.east, pos: [18.0, 0.0, 0.0]}
+  exits:
+    - {id: exit.south, pos: [0.0, -18.0, 0.0]}
+    - {id: exit.west, pos: [-18.0, 0.0, 0.0]}
+
+cameras:
+  - id: cam_01
+    type: fixed_bullet
+    mount: {pos: [16.0, -12.0, 4.0], yaw: 120, pitch: -18}
+    optics: {hfov_deg: 78}
+    capture: {res: [1280, 720], fps: 10}
+  - id: cam_02
+    type: dome
+    mount: {pos: [-14.0, 6.0, 3.5], yaw: -30, pitch: -22}
+    optics: {hfov_deg: 95}
+    capture: {res: [1280, 720], fps: 10}
+
+population:
+  hero:
+    - id: loiterer_1
+      role: intruder
+      body: {height_m: 1.81, skin_tone: 3, sex_presentation: m, age_band: 25-40}
+      outfit: {top: hoodie, outer: rain_jacket, bottom: cargo, colours: {top: "#3a3a3a"}}
+      gait: {style: normal, speed_mps: 1.35}
+      adversarial: {camera_awareness: 0.8, face_hiding: 0.6}
+      intent:
+        - {type: transit, from: spawn.east, to: zone.gate_A}
+        - {type: loiter, zone: zone.gate_A, dur_s: 25, activity: pace, radius_m: 2.5}
+        - {type: transit, to: exit.west, gait: {style: brisk}}
+
+    - id: commuter_1          # hard negative: same dwell, innocent intent
+      role: commuter
+      hard_negative_for: [loiter]
+      body: {height_m: 1.66, skin_tone: 7, sex_presentation: f, age_band: 25-40}
+      gait: {style: normal, speed_mps: 1.25}
+      intent:
+        - {type: transit, from: spawn.north, to: zone.gate_A}
+        - {type: commute_wait, zone: zone.gate_A, dur_s: 25, activity: idle}
+        - {type: transit, to: exit.south}
+
+    - id: courier_1
+      role: courier
+      body: {height_m: 1.72, skin_tone: 6, sex_presentation: m}
+      accessories: [backpack_large]
+      gait: {style: brisk, speed_mps: 1.6}
+      intent:
+        - {type: transit, from: spawn.north, to: zone.yard}
+        - {type: object_abandon, object: backpack_large, zone: zone.store,
+           leave_dist_m: 12, exit: exit.west}
+
+output:
+  modalities: [rgb]
+  gt: [mot, events, world_parquet, calib]

@@ -1,0 +1,19 @@
+out/
+*.mp4
+*.exr
+__pycache__/
+*.pyc
+.venv/
+unreal/**/Binaries/
+unreal/**/Intermediate/
+unreal/**/Saved/
+unreal/**/DerivedDataCache/
+.venv/
+data/
+*.egg-info/
+.pytest_cache/
+*.pt
+
+# H60 per-site operator-id salts (secret; never commit)
+*.salt
+

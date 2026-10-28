@@ -1,0 +1,5 @@
+ok line
+key = AKIAABCDEFGHIJKLMNOP
+tok ghp_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+-----BEGIN RSA PRIVATE KEY-----
+gcp AIzabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb

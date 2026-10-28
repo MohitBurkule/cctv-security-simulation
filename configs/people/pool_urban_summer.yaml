@@ -1,0 +1,17 @@
+# Appearance pool for procedural background/hero generation. Weights are relative.
+skin_tone: {uniform: [1, 10]}
+age_band: {"18-25": 0.25, "25-40": 0.35, "40-60": 0.25, "60+": 0.10, "child": 0.05}
+sex_presentation: {m: 0.48, f: 0.48, x: 0.04}
+height_m: {normal: {mean: 1.70, std: 0.09, clip: [1.20, 2.05]}}
+bmi_class: {slim: 0.25, normal: 0.45, heavy: 0.2, athletic: 0.1}
+hair: {styles: [short, medium, long, bun, ponytail, bald, curly, braids, hijab], colours: [black, dark_brown, brown, blonde, red, grey, dyed]}
+outfit:
+  top: {tshirt: 0.4, shirt: 0.2, polo: 0.1, hoodie: 0.15, tank: 0.1, dress: 0.05}
+  outer: {none: 0.6, light_jacket: 0.2, rain_jacket: 0.1, blazer: 0.05, hi_vis_vest: 0.05}
+  bottom: {jeans: 0.4, shorts: 0.25, chinos: 0.15, skirt: 0.1, cargo: 0.1}
+  shoes: {trainers: 0.6, sandals: 0.15, boots: 0.1, formal: 0.15}
+  headwear: {none: 0.7, cap: 0.2, sunhat: 0.05, beanie: 0.02, hood_up: 0.03}
+  colour_palette: {hue: uniform, saturation: {beta: [2, 3]}, value: {beta: [3, 2]}, pattern: {plain: 0.7, stripes: 0.1, logo: 0.15, floral: 0.05}}
+accessories: {none: 0.35, backpack_small: 0.2, backpack_large: 0.05, handbag: 0.15, tote: 0.1, suitcase: 0.05, umbrella: 0.05, phone_in_hand: 0.3}
+gait: {normal: 0.75, brisk: 0.12, slow: 0.08, limp_L: 0.02, limp_R: 0.02, drunk: 0.01}
+rf: {p_wifi_probe: 0.85, p_ble: 0.6}

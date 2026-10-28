@@ -1,0 +1,23 @@
+id: city_plaza
+engine_map: /Game/CitySample/Maps/Small_City_LVL
+lat_lon: [51.5074, -0.1278]
+units: m
+nav: {source: ue_navmesh, extra_waypoints: waypoints_plaza.json}
+zones:
+  - {id: zone.gate_A, tag: gate, polygon: [[10, 2], [14, 2], [14, 6], [10, 6]]}
+  - {id: zone.gate_B, tag: gate, polygon: [[40, -5], [46, -5], [46, 1], [40, 1]]}
+  - {id: zone.center, tag: public, polygon: [[-20, -20], [20, -20], [20, 20], [-20, 20]]}
+  - {id: zone.kiosk, tag: public, polygon: [[22, 10], [26, 10], [26, 14], [22, 14]]}
+  - {id: zone.bench_row, tag: public, polygon: [[-10, 25], [10, 25], [10, 28], [-10, 28]]}
+  - {id: zone.restricted_stage, tag: restricted, polygon: [[-30, -40], [30, -40], [30, -30], [-30, -30]], allowed_roles: [worker, guard]}
+  - {id: zone.blindspot_A, tag: blindspot, polygon: [[30, 30], [34, 30], [34, 36], [30, 36]]}
+spawn_points:
+  - {id: spawn.north, pos: [0, 80, 0]}
+  - {id: spawn.east, pos: [80, 0, 0]}
+exits:
+  - {id: exit.south, pos: [0, -80, 0]}
+  - {id: exit.west, pos: [-80, 0, 0]}
+props:
+  - {id: bench_1, type: bench, pos: [-5, 26.5, 0], seats: 3}
+  - {id: cam_07_mount, type: camera_mount, pos: [0, 0, 9], reachable_height_m: 2.6}
+lighting: {street_lamps: auto, lamp_colour_k: 3000}

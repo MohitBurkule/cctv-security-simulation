@@ -1,0 +1,596 @@
+name: 01_perimeter_site_s1037
+seed: 1037
+duration_s: 4.0
+fps: 10.0
+engine: unreal
+environment:
+  id: perimeter_site_40x30
+  zones:
+  - id: zone.open
+    polygon:
+    - - -19.2
+      - -14.399999999999999
+    - - 19.2
+      - -14.399999999999999
+    - - 19.2
+      - 14.399999999999999
+    - - -19.2
+      - 14.399999999999999
+  - id: zone.entrance_0
+    tag: gate
+    polygon:
+    - - 10.8
+      - -16.8
+    - - 16.8
+      - -16.8
+    - - 16.8
+      - -10.8
+    - - 10.8
+      - -10.8
+  - id: zone.entrance_1
+    tag: gate
+    polygon:
+    - - -16.8
+      - 10.8
+    - - -10.8
+      - 10.8
+    - - -10.8
+      - 16.8
+    - - -16.8
+      - 16.8
+  - id: zone.compound
+    tag: restricted
+    polygon:
+    - - -14.0
+      - 4.5
+    - - 14.0
+      - 4.5
+    - - 14.0
+      - 12.0
+    - - -14.0
+      - 12.0
+    allowed_roles:
+    - worker
+    - guard
+  - id: zone.fence_line
+    tag: perimeter_fence
+    polygon:
+    - - -14.0
+      - 4.5
+    - - 14.0
+      - 4.5
+    - - 14.0
+      - 7.5
+    - - -14.0
+      - 7.5
+    allowed_roles:
+    - worker
+    - guard
+  - id: zone.yard
+    polygon:
+    - - -16.0
+      - -9.75
+    - - 16.0
+      - -9.75
+    - - 16.0
+      - 3.75
+    - - -16.0
+      - 3.75
+  - id: zone.restricted_0
+    tag: restricted
+    polygon:
+    - - -9.9746641611912
+      - -8.00976339374556
+    - - 0.025335838808800304
+      - -8.00976339374556
+    - - 0.025335838808800304
+      - -0.009763393745560123
+    - - -9.9746641611912
+      - -0.009763393745560123
+    allowed_roles:
+    - worker
+    - guard
+  - id: zone.blindspot_0
+    tag: blindspot
+    polygon:
+    - - -5.5
+      - -15.5
+    - - 1.5
+      - -15.5
+    - - 1.5
+      - -8.5
+    - - -5.5
+      - -8.5
+  spawn_points:
+  - id: spawn.entrance_0
+    pos:
+    - 15.0
+    - -15.0
+    - 0.0
+  - id: spawn.entrance_1
+    pos:
+    - -15.0
+    - 15.0
+    - 0.0
+  exits:
+  - id: exit.entrance_0
+    pos:
+    - 15.0
+    - -15.0
+    - 0.0
+  - id: exit.entrance_1
+    pos:
+    - -15.0
+    - 15.0
+    - 0.0
+  props:
+  - id: door.entrance_0
+    type: door
+    pos:
+    - 13.8
+    - -13.8
+    - 0.0
+  - id: door.entrance_1
+    type: door
+    pos:
+    - -13.8
+    - 13.8
+    - 0.0
+  - id: gate.compound
+    type: gate
+    pos:
+    - 0.0
+    - 4.5
+    - 0.0
+  - id: asset_compound
+    type: cabinet
+    pos:
+    - 0.0
+    - 9.25
+    - 0.0
+  - id: fence_seg_0
+    type: fence_panel
+    pos:
+    - -12.6
+    - 4.5
+    - 0.0
+    cuttable: true
+    length_m: 3.0
+  - id: fence_seg_1
+    type: fence_panel
+    pos:
+    - -7.56
+    - 4.5
+    - 0.0
+    cuttable: true
+    length_m: 3.0
+  - id: fence_seg_2
+    type: fence_panel
+    pos:
+    - -2.5199999999999996
+    - 4.5
+    - 0.0
+    cuttable: true
+    length_m: 3.0
+  - id: fence_seg_3
+    type: fence_panel
+    pos:
+    - 2.5199999999999996
+    - 4.5
+    - 0.0
+    cuttable: true
+    length_m: 3.0
+  - id: fence_seg_4
+    type: fence_panel
+    pos:
+    - 7.5600000000000005
+    - 4.5
+    - 0.0
+    cuttable: true
+    length_m: 3.0
+  - id: fence_seg_5
+    type: fence_panel
+    pos:
+    - 12.6
+    - 4.5
+    - 0.0
+    cuttable: true
+    length_m: 3.0
+  - id: asset_0
+    type: cabinet
+    pos:
+    - -4.9746641611912
+    - -4.00976339374556
+    - 0.0
+  - id: gate.restricted_0
+    type: gate
+    pos:
+    - -4.9746641611912
+    - -0.009763393745560123
+    - 0.0
+  - id: mount_0
+    type: camera_mount
+    pos:
+    - -14.0625
+    - -13.5
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_1
+    type: camera_mount
+    pos:
+    - -6.1875
+    - -13.5
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_2
+    type: camera_mount
+    pos:
+    - 1.6875
+    - -13.5
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_3
+    type: camera_mount
+    pos:
+    - 9.5625
+    - -13.5
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_4
+    type: camera_mount
+    pos:
+    - 17.4375
+    - -13.5
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_5
+    type: camera_mount
+    pos:
+    - 18.0
+    - -6.1875
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_6
+    type: camera_mount
+    pos:
+    - 18.0
+    - 1.6875
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_7
+    type: camera_mount
+    pos:
+    - 18.0
+    - 9.5625
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_8
+    type: camera_mount
+    pos:
+    - 14.0625
+    - 13.5
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_9
+    type: camera_mount
+    pos:
+    - 6.1875
+    - 13.5
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_10
+    type: camera_mount
+    pos:
+    - -1.6875
+    - 13.5
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_11
+    type: camera_mount
+    pos:
+    - -9.5625
+    - 13.5
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_12
+    type: camera_mount
+    pos:
+    - -17.4375
+    - 13.5
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_13
+    type: camera_mount
+    pos:
+    - -18.0
+    - 6.1875
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_14
+    type: camera_mount
+    pos:
+    - -18.0
+    - -1.6875
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_15
+    type: camera_mount
+    pos:
+    - -18.0
+    - -9.5625
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_16
+    type: camera_mount
+    pos:
+    - 2.616737301667211
+    - -0.8153049659714426
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_17
+    type: camera_mount
+    pos:
+    - 1.9041369435411504
+    - 4.604571284424541
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_18
+    type: camera_mount
+    pos:
+    - 9.583782106702557
+    - 6.265340033177754
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_19
+    type: camera_mount
+    pos:
+    - -4.277165373923437
+    - -3.268483048243781
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_20
+    type: camera_mount
+    pos:
+    - -1.5215585717380407
+    - 5.746937306555672
+    - 0.0
+    reachable_height_m: 2.6
+  - id: mount_21
+    type: camera_mount
+    pos:
+    - 10.044613806013334
+    - 8.986624768315547
+    - 0.0
+    reachable_height_m: 2.6
+cameras:
+- id: cam_02
+  mount:
+    pos:
+    - 5.231449999999998
+    - 1.6259912182803564
+    - 4.5
+    yaw: 300.0
+    pitch: -13.2
+  optics:
+    hfov_deg: 62.0
+  capture:
+    res:
+    - 640
+    - 360
+    fps: 10.0
+population:
+  hero:
+  - id: p000
+    body:
+      height_m: 1.608
+      shoulder_w: 0.478
+      bmi_class: heavy
+      skin_tone: 8
+      sex_presentation: f
+    outfit:
+      top: polo
+      bottom: shorts
+      shoes: formal
+      headwear: cap
+      colours:
+        top: '#af59a7'
+        outer: '#6b43b4'
+        bottom: '#9d9cb6'
+    accessories:
+    - tote
+    gait:
+      speed_mps: 1.197
+    intent:
+    - type: transit
+      from: spawn.entrance_0
+      to: zone.entrance_1
+    - type: commute_wait
+      zone: zone.entrance_1
+      dur_s: 32.86141241401746
+      activity: idle
+    - type: transit
+      to: exit.entrance_1
+    hard_negative_for:
+    - loiter
+  - id: p001
+    body:
+      height_m: 1.897
+      shoulder_w: 0.463
+      skin_tone: 2
+      sex_presentation: f
+      age_band: 18-25
+    outfit:
+      bottom: chinos
+      colours:
+        top: '#9885b1'
+        outer: '#61d569'
+        bottom: '#495020'
+    accessories:
+    - handbag
+    gait:
+      speed_mps: 1.368
+    intent:
+    - type: transit
+      from: spawn.entrance_0
+      to: zone.entrance_1
+    - type: commute_wait
+      zone: zone.entrance_1
+      dur_s: 37.499024268671086
+      activity: idle
+    - type: transit
+      to: exit.entrance_1
+    hard_negative_for:
+    - loiter
+  - id: p002
+    body:
+      height_m: 1.628
+      shoulder_w: 0.454
+      bmi_class: heavy
+      skin_tone: 1
+      sex_presentation: m
+      age_band: 40-60
+    outfit:
+      outer: light_jacket
+      bottom: shorts
+      colours:
+        top: '#9e3b64'
+        outer: '#f5ceca'
+        bottom: '#9fcb9c'
+    gait:
+      speed_mps: 1.164
+    intent:
+    - type: transit
+      from: spawn.entrance_0
+      to: zone.entrance_0
+    - type: commute_wait
+      zone: zone.entrance_0
+      dur_s: 75.9918266536339
+      activity: idle
+    - type: transit
+      to: exit.entrance_1
+    hard_negative_for:
+    - loiter
+  - id: p003
+    body:
+      height_m: 1.649
+      shoulder_w: 0.515
+      sex_presentation: f
+      age_band: 60+
+    outfit:
+      bottom: shorts
+      headwear: hood_up
+      colours:
+        top: '#7dc9ec'
+        outer: '#9f8e84'
+        bottom: '#082c17'
+    accessories:
+    - tote
+    gait:
+      speed_mps: 1.038
+    intent:
+    - type: transit
+      from: spawn.entrance_1
+      to: zone.yard
+    - type: transit
+      to: exit.entrance_1
+  - id: p004
+    body:
+      height_m: 1.653
+      shoulder_w: 0.493
+      bmi_class: slim
+      skin_tone: 8
+      sex_presentation: m
+    outfit:
+      bottom: shorts
+      shoes: sandals
+      colours:
+        top: '#695f83'
+        outer: '#385982'
+        bottom: '#e7838f'
+    accessories:
+    - umbrella
+    gait:
+      speed_mps: 1.095
+    intent:
+    - type: transit
+      from: spawn.entrance_0
+      to: zone.yard
+    - type: transit
+      to: exit.entrance_1
+  - id: p005
+    body:
+      height_m: 1.774
+      shoulder_w: 0.481
+      skin_tone: 10
+      sex_presentation: f
+      age_band: 18-25
+    outfit:
+      top: tank
+      bottom: chinos
+      colours:
+        top: '#d1d3a3'
+        outer: '#4b7587'
+        bottom: '#141f13'
+    gait:
+      speed_mps: 1.13
+    intent:
+    - type: transit
+      from: spawn.entrance_1
+      to: zone.open
+    - type: transit
+      to: exit.entrance_1
+  - id: p006
+    body:
+      height_m: 1.792
+      shoulder_w: 0.438
+      bmi_class: slim
+      sex_presentation: m
+    outfit:
+      shoes: boots
+      colours:
+        top: '#96d9be'
+        outer: '#4f466d'
+        bottom: '#a0e588'
+    accessories:
+    - backpack_small
+    gait:
+      speed_mps: 1.286
+    intent:
+    - type: transit
+      from: spawn.entrance_0
+      to: zone.open
+    - type: transit
+      to: exit.entrance_0
+  - id: p007
+    body:
+      height_m: 1.647
+      shoulder_w: 0.455
+      skin_tone: 1
+      sex_presentation: f
+    outfit:
+      top: hoodie
+      outer: light_jacket
+      shoes: boots
+      headwear: cap
+      colours:
+        top: '#958a99'
+        outer: '#8ec46d'
+        bottom: '#519241'
+    gait:
+      speed_mps: 1.33
+    intent:
+    - type: transit
+      from: spawn.entrance_1
+      to: zone.yard
+    - type: transit
+      to: exit.entrance_1
+time_of_day:
+  start: '2026-09-27T14:30:00+00:00'
+output:
+  modalities:
+  - rgb
+  gt:
+  - mot
+  - events
+  - world_parquet
+  - calib

@@ -1,0 +1,14 @@
+cameras:
+  - {id: cam_01, type: fixed_bullet, mount: {pos: [-150, 3, 6], yaw: 90, pitch: -12}, optics: {hfov_deg: 40},
+     capture: {res: [1920, 1080], fps: 15, night_mode: auto_ir}, stream: {codec: h265, bitrate_kbps: 1500}}
+  - {id: cam_02, type: fixed_bullet, mount: {pos: [-100, 3, 6], yaw: 90, pitch: -12}, optics: {hfov_deg: 40}, capture: {res: [1920, 1080], fps: 15}}
+  - {id: cam_03, type: fixed_bullet, mount: {pos: [-50, 3, 6], yaw: 90, pitch: -12}, optics: {hfov_deg: 40}, capture: {res: [1920, 1080], fps: 15}}
+  - {id: cam_04, type: fixed_bullet, mount: {pos: [0, 3, 6], yaw: 90, pitch: -12}, optics: {hfov_deg: 40}, capture: {res: [1920, 1080], fps: 15}}
+  - {id: cam_05, type: fixed_bullet, mount: {pos: [50, 3, 6], yaw: 90, pitch: -12}, optics: {hfov_deg: 40}, capture: {res: [1920, 1080], fps: 15}}
+  - {id: cam_06, type: fixed_bullet, mount: {pos: [100, 3, 6], yaw: 90, pitch: -12}, optics: {hfov_deg: 40}, capture: {res: [1920, 1080], fps: 15}}
+  - {id: cam_07, type: thermal, mount: {pos: [0, 0, 8], yaw: 0, pitch: -10}, optics: {hfov_deg: 25},
+     capture: {res: [640, 512], fps: 9, palette: white_hot}}
+  - {id: cam_08, type: ptz, mount: {pos: [0, 0, 12], yaw: 0, pitch: -20}, optics: {hfov_deg: [2.0, 55]},
+     capture: {res: [1920, 1080], fps: 25, night_mode: auto_ir},
+     ptz: {pan: [-180, 180], tilt: [-90, 5], speed_dps: 90, patrol: [{preset: west, dwell_s: 30}, {preset: east, dwell_s: 30}]},
+     presets: {west: {yaw: -90, pitch: -8, hfov_deg: 15}, east: {yaw: 90, pitch: -8, hfov_deg: 15}}}

@@ -1,0 +1,31 @@
+# Generator templates referenced from scenarios (population.generators)
+loiterer:
+  role: {tourist: 0.5, commuter: 0.3, intruder: 0.2}
+  intent:
+    - {type: transit, from: random_spawn, to: $zone}
+    - {type: loiter, zone: $zone, dur_s: $dur_s, activity: {idle: 0.4, pace: 0.3, phone: 0.2, scan: 0.1}, look_at_cameras_p: 0.2}
+    - {type: transit, to: random_exit}
+
+commute_wait_negative:            # hard negative for loiter
+  role: commuter
+  hard_negative_for: [loiter]
+  intent:
+    - {type: transit, from: random_spawn, to: {random_zone_tag: "queue|gate"}}
+    - {type: commute_wait, dur_s: [60, 400], phone_p: 0.7, sit_p: 0.3}
+    - {type: transit, to: random_exit}
+
+fight_pair:
+  count_people: 2
+  role: {commuter: 0.7, tourist: 0.3}
+  intent_shared:
+    - {type: meet_and_greet, zone: $zone, at: $t_start, dur_s: 10}
+    - {type: argument, escalation_s: [15, 40]}
+    - {type: fight, dur_s: [8, 25], intensity: [0.4, 1.0], bystander_reaction: {flee_p: 0.5, gather_p: 0.4, ignore_p: 0.1, radius_m: 12}}
+    - {type: flee, to: random_exit, gait: {style: run}}
+
+maintenance_vs_tamper:
+  count_people: 2
+  people:
+    - {role: worker, outfit: {outer: hi_vis_jacket, headwear: hardhat}, intent: [{type: maintenance, asset: $asset, dur_s: [120, 300]}]}
+    - {role: intruder, outfit: {outer: hi_vis_jacket, headwear: hardhat}, adversarial: {role_disguise: worker},
+       intent: [{type: asset_tamper, asset: $asset_2, dur_s: [60, 180]}, {type: transit, to: random_exit}]}

@@ -1,0 +1,39 @@
+schema_version: 1
+name: border_fence_night_probe
+seed: 7
+duration_s: 900
+fps: 15
+engine: unreal
+environment: !include ../environments/border_fence.yaml
+cameras: !include ../cameras/fence_8cam_thermal.yaml
+time_of_day: {start: "2026-01-20T02:10:00+00:00"}
+weather: {preset: fog, fog_density: 0.3, wind_mps: 3}
+population:
+  background: {count: 0}
+  distractors: [{type: animal, species: fox, count: 2}, {type: animal, species: deer, count: 1}]
+  hero:
+    - id: guard_1
+      role: guard
+      outfit: {top: uniform_shirt, outer: hi_vis_jacket, bottom: uniform_trousers, headwear: cap}
+      intent: [{type: worker_patrol, route: route.fence_walk, period_s: 600, torch: true}]
+    - !include ../people/intruder_a.yaml
+    - id: intruder_b
+      role: intruder
+      identity: {group: cell_1}
+      outfit: {top: dark_hoodie, bottom: dark_cargo, headwear: balaclava, colours: {top: "#111111", bottom: "#151515"}}
+      accessories: [bolt_cutter, backpack_small]
+      adversarial: {camera_awareness: 0.9, face_hiding: 1.0}
+      intent:
+        - {type: recon, targets: [cam_03, cam_04, guard_1], dwell_s: 6, wait_for: {person: guard_1, out_of_zone: zone.sector_3}}
+        - {type: perimeter_probe, segment: fence_seg_12, approach_dist_m: 1.0}
+        - {type: fence_cut, segment: fence_seg_12, tool: bolt_cutter, dur_s: [40, 80]}
+        - {type: transit, to: zone.inside_sector_3, gait: {style: crouch, speed_mps: 0.9}}
+        - {type: flee, from: guard_1, to: exit.tree_line, gait: {style: run}}
+anomaly_injector: {enabled: false}
+sensors_extra:
+  fence_vibration: [{id: fv_12, segment: fence_seg_12, false_alarm_rate_per_h: 1.5}]
+  rf_sniffers: [{id: rf_tower_1, pos: [0, 0, 8]}]
+output:
+  modalities: [rgb, depth, instance_mask, thermal]
+  gt: [mot, coco, pose3d, world_parquet, events, calib, rf, fence]
+  degrade_profiles: [clean, cctv_thermal_9fps, cctv_ir_720p_fog]

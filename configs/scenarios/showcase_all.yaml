@@ -1,0 +1,674 @@
+# Dense showcase (docs/research/95): generated perimeter_site (fenced compound with gate topology),
+# built by the edit recipe in docs/research/95; staggered hostile acts + concurrent hard-negative twins.
+name: showcase_all
+seed: 901
+duration_s: 22.0
+fps: 5.0
+engine: unreal
+environment:
+  id: perimeter_site_40x30
+  zones:
+  - id: zone.open
+    polygon:
+    - - -19.2
+      - -14.399999999999999
+    - - 19.2
+      - -14.399999999999999
+    - - 19.2
+      - 14.399999999999999
+    - - -19.2
+      - 14.399999999999999
+  - id: zone.entrance_0
+    tag: gate
+    polygon:
+    - - 15.400000000000002
+      - 10.8
+    - - 21.400000000000002
+      - 10.8
+    - - 21.400000000000002
+      - 16.8
+    - - 15.400000000000002
+      - 16.8
+  - id: zone.compound
+    tag: restricted
+    polygon:
+    - - -14.0
+      - 4.5
+    - - 14.0
+      - 4.5
+    - - 14.0
+      - 12.0
+    - - -14.0
+      - 12.0
+    allowed_roles:
+    - worker
+    - guard
+  - id: zone.fence_line
+    tag: perimeter_fence
+    polygon:
+    - - -14.0
+      - 4.5
+    - - 14.0
+      - 4.5
+    - - 14.0
+      - 7.5
+    - - -14.0
+      - 7.5
+    allowed_roles:
+    - worker
+    - guard
+  - id: zone.yard
+    polygon:
+    - - -16.0
+      - -9.75
+    - - 16.0
+      - -9.75
+    - - 16.0
+      - 3.75
+    - - -16.0
+      - 3.75
+  - id: zone.restricted_0
+    tag: restricted
+    polygon:
+    - - 1.2525571496368997
+      - 5.169326229686003
+    - - 11.2525571496369
+      - 5.169326229686003
+    - - 11.2525571496369
+      - 13.169326229686003
+    - - 1.2525571496368997
+      - 13.169326229686003
+    allowed_roles:
+    - worker
+    - guard
+  - id: zone.blindspot_0
+    tag: blindspot
+    polygon:
+    - - -5.5
+      - -15.5
+    - - 1.5
+      - -15.5
+    - - 1.5
+      - -8.5
+    - - -5.5
+      - -8.5
+  spawn_points:
+  - id: spawn.entrance_0
+    pos:
+    - 20.0
+    - 15.0
+    - 0.0
+  exits:
+  - id: exit.entrance_0
+    pos:
+    - 20.0
+    - 15.0
+    - 0.0
+  props:
+  - id: door.entrance_0
+    type: door
+    pos:
+    - 18.400000000000002
+    - 13.8
+    - 0.0
+  - id: gate.compound
+    type: gate
+    pos:
+    - 0.0
+    - 4.5
+    - 0.0
+  - id: asset_compound
+    type: cabinet
+    pos:
+    - 0.0
+    - 9.25
+    - 0.0
+  - id: fence_seg_0
+    type: fence_panel
+    pos:
+    - -12.6
+    - 4.5
+    - 0.0
+    cuttable: true
+    length_m: 3.0
+  - id: fence_seg_1
+    type: fence_panel
+    pos:
+    - -7.56
+    - 4.5
+    - 0.0
+    cuttable: true
+    length_m: 3.0
+  - id: fence_seg_2
+    type: fence_panel
+    pos:
+    - -2.5199999999999996
+    - 4.5
+    - 0.0
+    cuttable: true
+    length_m: 3.0
+  - id: fence_seg_3
+    type: fence_panel
+    pos:
+    - 2.5199999999999996
+    - 4.5
+    - 0.0
+    cuttable: true
+    length_m: 3.0
+  - id: fence_seg_4
+    type: fence_panel
+    pos:
+    - 7.5600000000000005
+    - 4.5
+    - 0.0
+    cuttable: true
+    length_m: 3.0
+  - id: fence_seg_5
+    type: fence_panel
+    pos:
+    - 12.6
+    - 4.5
+    - 0.0
+    cuttable: true
+    length_m: 3.0
+  - id: asset_0
+    type: cabinet
+    pos:
+    - 6.2525571496369
+    - 9.169326229686003
+    - 0.0
+  - id: gate.restricted_0
+    type: gate
+    pos:
+    - 6.2525571496369
+    - 5.169326229686003
+    - 0.0
+cameras:
+- id: cam_01
+  mount:
+    pos:
+    - -15.0
+    - -11.0
+    - 4.5
+    yaw: 45.0
+    pitch: -18.0
+  optics:
+    hfov_deg: 70.0
+  capture:
+    res:
+    - 640
+    - 360
+    fps: 5.0
+- id: cam_02
+  mount:
+    pos:
+    - 15.0
+    - -11.0
+    - 4.5
+    yaw: 135.0
+    pitch: -18.0
+  optics:
+    hfov_deg: 70.0
+  capture:
+    res:
+    - 640
+    - 360
+    fps: 5.0
+  tamper:
+  - t: 12.0
+    kind: cover
+  - t: 18.0
+    kind: defocus
+- id: cam_ptz
+  type: ptz
+  mount:
+    pos:
+    - 0.0
+    - -13.0
+    - 8.0
+    yaw: 90.0
+    pitch: -20.0
+  optics:
+    hfov_deg:
+    - 3.0
+    - 60.0
+  capture:
+    res:
+    - 640
+    - 360
+    fps: 5.0
+  ptz:
+    patrol:
+    - preset: wide
+      dwell_s: 3.4
+    - preset: alarm
+      dwell_s: 60
+  presets:
+    wide:
+      yaw: 90.0
+      pitch: -20.0
+      hfov_deg: 60.0
+    alarm:
+      yaw: 103.0
+      pitch: -18.0
+      hfov_deg: 28.0
+population:
+  hero:
+  - id: p000
+    role: intruder
+    body:
+      height_m: 1.621
+      shoulder_w: 0.47
+      bmi_class: heavy
+      skin_tone: 8
+      sex_presentation: f
+      age_band: 60+
+    outfit:
+      top: tank
+      outer: workwear
+      shoes: formal
+      colours:
+        top: '#93c48b'
+        outer: '#afbfb5'
+        bottom: '#9cb874'
+    accessories:
+    - tool_bag
+    gait:
+      speed_mps: 0.862
+    intent:
+    - type: transit
+      from:
+      - -4
+      - -1
+      to:
+      - -4
+      - 2.5
+    - type: zone_intrusion
+      zone: zone.compound
+      dur_s: 10
+      depth_m: 3
+  - id: p001
+    role: worker
+    body:
+      height_m: 1.718
+      shoulder_w: 0.495
+      bmi_class: heavy
+      skin_tone: 6
+      sex_presentation: f
+      age_band: 60+
+    outfit:
+      top: tank
+      outer: workwear
+      bottom: shorts
+      colours:
+        top: '#d1a68d'
+        outer: '#5a4668'
+        bottom: '#644f55'
+    accessories:
+    - tool_bag
+    gait:
+      style: slow
+      speed_mps: 0.827
+    intent:
+    - type: transit
+      from:
+      - 3
+      - -9
+      to:
+      - 1
+      - 1.5
+    - type: maintenance_visit
+      zone: zone.compound
+      dur_s: 15
+    hard_negative_for:
+    - zone_intrusion
+  - id: p002
+    role: intruder
+    body:
+      height_m: 1.694
+      shoulder_w: 0.501
+      bmi_class: heavy
+      sex_presentation: m
+      age_band: 40-60
+    outfit:
+      bottom: chinos
+      colours:
+        top: '#6c7a6d'
+        outer: '#ce7583'
+        bottom: '#a799a8'
+    accessories:
+    - suitcase
+    gait:
+      speed_mps: 1.292
+    intent:
+    - type: transit
+      from:
+      - -12
+      - -5
+      to:
+      - -7.56
+      - 3.0
+    - type: fence_climb
+      segment: fence_seg_1
+      climb_s: 3
+      dwell_s: 6
+  - id: p003
+    role: guard
+    body:
+      height_m: 1.567
+      shoulder_w: 0.447
+      bmi_class: slim
+      skin_tone: 3
+      sex_presentation: f
+      age_band: 60+
+    outfit:
+      top: shirt
+      bottom: chinos
+      colours:
+        top: '#a6d5b9'
+        outer: '#8e1fce'
+        bottom: '#a88585'
+    accessories:
+    - suitcase
+    gait:
+      style: brisk
+      speed_mps: 1.409
+    intent:
+    - type: transit
+      from:
+      - -13
+      - 2.5
+      to:
+      - -13
+      - 2.5
+    - type: patrol_guard
+      check_s: 2
+      zones:
+      - zone.fence_line
+    hard_negative_for:
+    - fence_climb
+  - id: p004
+    role: intruder
+    body:
+      height_m: 1.802
+      shoulder_w: 0.482
+      bmi_class: athletic
+    outfit:
+      top: tank
+      outer: rain_jacket
+      bottom: shorts
+      colours:
+        top: '#a49b55'
+        outer: '#96d0bb'
+        bottom: '#708ea7'
+    gait:
+      speed_mps: 1.108
+    intent:
+    - type: transit
+      from:
+      - 9
+      - -8
+      to:
+      - 2.52
+      - 3.0
+    - type: fence_cut
+      segment: fence_seg_3
+      cut_s: 4
+      dwell_s: 5
+  - id: p005
+    role: guard
+    body:
+      height_m: 1.38
+      shoulder_w: 0.432
+      skin_tone: 1
+      sex_presentation: m
+      age_band: child
+    outfit:
+      outer: light_jacket
+      bottom: chinos
+      shoes: boots
+      colours:
+        top: '#e4e866'
+        outer: '#8cd5a2'
+        bottom: '#6c6143'
+    accessories:
+    - handbag
+    gait:
+      speed_mps: 1.036
+    intent:
+    - type: transit
+      from:
+      - 13
+      - 2.5
+      to:
+      - 13
+      - 2.5
+    - type: patrol_guard
+      check_s: 2
+      zones:
+      - zone.fence_line
+    hard_negative_for:
+    - fence_cut
+  - id: p006
+    role: intruder
+    body:
+      height_m: 1.873
+      shoulder_w: 0.479
+      bmi_class: slim
+      skin_tone: 9
+      sex_presentation: m
+    outfit:
+      shoes: sandals
+      colours:
+        top: '#547997'
+        outer: '#427176'
+        bottom: '#5ab6d4'
+    accessories:
+    - suitcase
+    gait:
+      style: brisk
+      speed_mps: 1.636
+    intent:
+    - type: transit
+      from:
+      - 5
+      - -1
+      to:
+      - 4
+      - 1
+    - type: fence_tailgate
+      zone: zone.compound
+      wait_s: 30
+      dur_s: 8
+  - id: p007
+    role: worker
+    body:
+      height_m: 1.682
+      shoulder_w: 0.455
+      skin_tone: 4
+      sex_presentation: m
+      age_band: 40-60
+    outfit:
+      shoes: boots
+      colours:
+        top: '#98b5ce'
+        outer: '#949569'
+        bottom: '#972375'
+    gait:
+      speed_mps: 1.053
+    intent:
+    - type: transit
+      from:
+      - -3
+      - -12
+      to:
+      - -1
+      - 0
+    - type: maintenance_visit
+      zone: zone.restricted_0
+      dur_s: 15
+    hard_negative_for:
+    - fence_tailgate
+  - id: p008
+    role: intruder
+    body:
+      height_m: 1.387
+      shoulder_w: 0.459
+      skin_tone: 4
+      sex_presentation: m
+      age_band: child
+    outfit:
+      top: shirt
+      outer: rain_jacket
+      bottom: shorts
+      colours:
+        top: '#d566d7'
+        outer: '#5fd942'
+        bottom: '#63433c'
+    gait:
+      speed_mps: 1.07
+    intent:
+    - type: loiter
+      zone:
+      - -10
+      - -3
+      dur_s: 30
+      activity: pace
+      radius_m: 1.5
+  - id: p009
+    body:
+      height_m: 1.874
+      shoulder_w: 0.482
+      bmi_class: slim
+      skin_tone: 9
+      sex_presentation: f
+    outfit:
+      top: shirt
+      bottom: shorts
+      shoes: boots
+      colours:
+        top: '#300850'
+        outer: '#67cbd3'
+        bottom: '#e6e1d4'
+    accessories:
+    - umbrella
+    gait:
+      speed_mps: 1.435
+    intent:
+    - type: commute_wait
+      zone:
+      - -14
+      - -8
+      dur_s: 30
+      activity: idle
+    hard_negative_for:
+    - loiter
+  - id: p010
+    role: intruder
+    body:
+      height_m: 1.661
+      shoulder_w: 0.446
+      skin_tone: 7
+      sex_presentation: m
+      age_band: 60+
+    outfit:
+      top: tank
+      shoes: sandals
+      colours:
+        top: '#7c919d'
+        outer: '#245947'
+        bottom: '#6b4491'
+    accessories:
+    - umbrella
+    gait:
+      speed_mps: 1.142
+    intent:
+    - type: transit
+      from:
+      - 14
+      - -9
+      to:
+      - 8
+      - -4
+    - type: object_abandon
+      object: backpack_large
+      zone:
+      - 7
+      - -3
+      leave_dist_m: 6
+      exit:
+      - 16
+      - -9
+  - id: p011
+    role: worker
+    body:
+      height_m: 1.774
+      shoulder_w: 0.458
+      bmi_class: heavy
+      skin_tone: 8
+      sex_presentation: f
+    outfit:
+      top: hoodie
+      shoes: formal
+      colours:
+        top: '#275434'
+        outer: '#4e3e99'
+        bottom: '#303cab'
+    gait:
+      speed_mps: 1.15
+    intent:
+    - type: transit
+      from:
+      - -4
+      - -13
+      to:
+      - -3
+      - -11
+    - type: staff_escort
+      target: p007
+      gap_m: 1.2
+    hard_negative_for:
+    - object_abandon
+  - id: w000
+    role: wildlife
+    identity:
+      class: animal
+      species: deer_fawn
+    body:
+      height_m: 0.8875925832854413
+      shoulder_w: 0.25
+    gait:
+      style: run
+      speed_mps: 2.3780019067394385
+    intent:
+    - type: transit
+      from:
+      - 17
+      - -2
+      to:
+      - 10
+      - -1
+    - type: wildlife
+      zone: zone.yard
+      dur_s: 20
+      radius_m: 8
+      top_mps: 2.5
+      exit:
+      - -17
+      - -6
+time_of_day:
+  start: '2026-09-27T19:15:00+00:00'
+weather:
+  preset: rain
+  rain_intensity: 0.6
+  wetness: 0.8
+  fog_density: 0.1
+  wind_mps: 4
+output:
+  modalities:
+  - rgb
+  gt:
+  - mot
+  - events
+  - world_parquet
+  - calib

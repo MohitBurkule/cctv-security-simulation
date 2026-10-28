@@ -1,0 +1,47 @@
+; SurvSim project configuration.
+;
+; The renderer settings below are load-bearing, not boilerplate. A project
+; created without them falls back to Vulkan SM5, and UE 5.8's deferred renderer
+; produces ENTIRELY BLACK frames on SM5 while still reporting a successful
+; render — 50 correctly-sized PNGs, a resolved camera cut, exit code 0, and not
+; one lit pixel. SF_VULKAN_SM6 is what makes the renderer actually run.
+
+[/Script/LinuxTargetPlatform.LinuxTargetSettings]
++TargetedRHIs=SF_VULKAN_SM6
+DefaultGraphicsRHI=DefaultGraphicsRHI_Vulkan
+
+[/Script/Engine.RendererSettings]
+r.Mobile.ShadingPath=0
+r.SkinCache.CompileShaders=True
+r.RayTracing=False
+; Lumen needs SM6 and a lot of GPU. On an 8 GB laptop card, the older
+; screen-space path is both sufficient for CCTV-scale imagery and far cheaper.
+r.DynamicGlobalIlluminationMethod=0
+r.ReflectionMethod=1
+r.GenerateMeshDistanceFields=False
+; Auto-exposure ON. With it off the fixed EV100 mapped a dim scene to pure
+; black while the render still reported success.
+r.DefaultFeature.AutoExposure=True
+; Motion blur off: it fights the degradation chain, which models exposure-time
+; blur itself from the camera's shutter speed.
+r.DefaultFeature.MotionBlur=False
+r.DefaultFeature.AntiAliasing=2
+
+[/Script/EngineSettings.GameMapsSettings]
+EditorStartupMap=/Game/SurvSim/TestMap.TestMap
+GameDefaultMap=/Game/SurvSim/TestMap.TestMap
+
+[/Script/AndroidFileServerEditor.AndroidFileServerRuntimeSettings]
+bEnablePlugin=True
+bAllowNetworkConnection=True
+SecurityToken=01A0B48ACC447F75BF5D8D437A428A98
+bIncludeInShipping=False
+bAllowExternalStartInShipping=False
+bCompileAFSProject=False
+bUseCompression=False
+bLogFiles=False
+bReportStats=False
+ConnectionType=USBOnly
+bUseManualIPAddress=False
+ManualIPAddress=
+

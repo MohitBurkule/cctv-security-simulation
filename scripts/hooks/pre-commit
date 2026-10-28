@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Fast pre-commit gate (<30 s): secret scan of staged files, ruff on staged .py files, compileall, check tests.
+# Install with scripts/hooks/install.sh. Bypass in an emergency: git commit --no-verify.
+set -euo pipefail
+root="$(git rev-parse --show-toplevel)"
+cd "$root"
+[ -f .venv/bin/activate ] && source .venv/bin/activate
+
+echo "[pre-commit] secret scan"
+python scripts/hooks/secret_scan.py
+
+mapfile -t staged < <(git diff --cached --name-only --diff-filter=ACM -- '*.py')
+if [ "${#staged[@]}" -gt 0 ]; then
+  echo "[pre-commit] ruff on ${#staged[@]} staged file(s)"
+  ruff check --quiet "${staged[@]}"
+  echo "[pre-commit] compileall"
+  python -m compileall -q "${staged[@]}" >/dev/null
+fi
+python -m compileall -q survsim scripts/check_render.py scripts/check_job_result.py >/dev/null
+
+echo "[pre-commit] pytest (checks)"
+python -m pytest -n auto -x -q -p no:cacheprovider tests/test_checks*.py

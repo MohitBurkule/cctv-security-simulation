@@ -1,0 +1,52 @@
+schema_version: 1
+name: plaza_event_crowd
+seed: 1234
+duration_s: 600
+fps: 25
+engine: unreal
+environment: !include ../environments/city_plaza.yaml
+cameras: !include ../cameras/plaza_12cam.yaml
+time_of_day: {start: "2026-06-14T21:30:00+01:00", speed: 1.0}
+weather:
+  preset: rain_light
+  schedule: [{t: 300, preset: fog, fog_density: 0.4, ramp_s: 60}]
+population:
+  background:
+    count: 300
+    density_curve: [{t: 0, mult: 0.6}, {t: 200, mult: 1.0}, {t: 500, mult: 0.3}]
+    appearance_pool: !include ../people/pool_urban_summer.yaml
+  hero:
+    - !include ../people/intruder_a.yaml
+    - id: courier_1
+      role: courier
+      body: {height_m: 1.72, bmi_class: normal, skin_tone: 6, sex_presentation: m, age_band: 25-40}
+      outfit: {top: tshirt, outer: hi_vis_vest, bottom: jeans, shoes: trainers, headwear: cap,
+               colours: {top: "#2e4a7d", outer: "#f5e600", bottom: "#1c1c2a"}}
+      accessories: [backpack_large, phone]
+      gait: {style: brisk, speed_mps: 1.6}
+      rf: [{proto: wifi_probe, interval_s: 30}, {proto: ble, interval_s: 1}]
+      intent:
+        - {type: transit, from: spawn.north, to: zone.kiosk}
+        - {type: object_abandon, object: backpack_large, zone: zone.bench_row, leave_dist_m: 40}
+        - {type: outfit_change, in_zone: zone.blindspot_A, delta: {outer: none, headwear: none}}
+        - {type: loiter, zone: zone.gate_B, dur_s: 240, activity: phone, look_at_cameras_p: 0.3}
+        - {type: transit, to: exit.south, gait: {style: normal}}
+  generators:
+    - {template: loiterer, count: 3, zones: [zone.gate_A, zone.gate_B], dur_s: [120, 400]}
+    - {template: fight_pair, count: 1, t_start: [350, 420], zone: zone.center}
+    - {template: commute_wait_negative, count: 8}
+anomaly_injector:
+  enabled: true
+  rate_per_min: 0.5
+  allowed: [loiter, following, concealment, camera_tamper]
+  camera_tamper: {cameras: [cam_07], kinds: [spray, tilt]}
+sensors_extra:
+  rf_sniffers: [{id: rf_1, pos: [12.0, 4.5, 3.0]}, {id: rf_2, pos: [-30, 10, 3]}]
+  microphones: [{id: mic_1, pos: [0, 0, 4]}]
+  access_control: [{id: gate_B_turnstile, zone: zone.gate_B, false_alarm_rate_per_h: 0.2}]
+output:
+  root: ./out/${name}/${seed}
+  modalities: [rgb, depth, instance_mask]
+  gt: [mot, coco, keypoints2d, pose3d, world_parquet, events, calib, rf, audio, access]
+  video: {codec: h264, crf: 23, gop: 50}
+  degrade_profiles: [clean, cctv_720p_h264, cctv_lowlight_ir]

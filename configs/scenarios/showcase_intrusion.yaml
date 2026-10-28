@@ -1,0 +1,95 @@
+schema_version: 1
+name: showcase_intrusion
+seed: 801
+duration_s: 10
+fps: 5
+engine: unreal
+
+environment:
+  id: showcase_compound
+  zones:
+    - {id: zone.gate_A, tag: gate, polygon: [[10, -4], [18, -4], [18, 4], [10, 4]]}
+    - {id: zone.yard, tag: public, polygon: [[-30, -30], [30, -30], [30, 30], [-30, 30]]}
+    - {id: zone.substation, tag: restricted, polygon: [[-28, 10], [-16, 10], [-16, 24], [-28, 24]],
+       allowed_roles: [worker, guard]}
+    - {id: zone.fence_north, tag: perimeter_fence, polygon: [[-30, 27], [30, 27], [30, 29], [-30, 29]]}
+  spawn_points:
+    - {id: spawn.sub_worker, pos: [-22.0, 7.0, 0.0]}
+    - {id: spawn.fence_climb, pos: [-6.0, 23.0, 0.0]}
+    - {id: spawn.sub_intrusion, pos: [-19.0, 7.0, 0.0]}
+  exits:
+    - {id: exit.south, pos: [0.0, -28.0, 0.0]}
+    - {id: exit.west, pos: [-28.0, 0.0, 0.0]}
+  props:
+    - {id: fence_seg_12, type: fence_panel, pos: [-6.0, 28.0, 0.0], length_m: 3, cuttable: true}
+    - {id: door.substation, type: door, pos: [-22.0, 10.0, 0.0]}
+
+cameras:
+  - id: cam_gate
+    type: fixed_bullet
+    mount: {pos: [22.0, -10.0, 4.5], yaw: 135, pitch: -20}
+    optics: {hfov_deg: 70}
+    capture: {res: [640, 360], fps: 5}
+  - id: cam_sub
+    type: fixed_bullet
+    mount: {pos: [-10.0, 20.0, 4.0], yaw: 180, pitch: -15}
+    optics: {hfov_deg: 60}
+    capture: {res: [640, 360], fps: 5}
+    # cover-tamper 12 s in: everything after t=12 must be a blind camera.
+    tamper: [{t: 12.0, kind: cover}]
+  - id: cam_ptz
+    type: ptz
+    mount: {pos: [0.0, 0.0, 9.0], yaw: 0, pitch: -25}
+    optics: {hfov_deg: [3.0, 60]}
+    capture: {res: [640, 360], fps: 5}
+    ptz:
+      speed_dps: 60
+      patrol:
+        - {preset: gate, dwell_s: 5}
+        - {preset: fence, dwell_s: 5}
+    presets:
+      gate:  {yaw: -10, pitch: -22, hfov_deg: 30}
+      fence: {yaw: 90,  pitch: -18, hfov_deg: 35}
+
+time_of_day: {start: "2026-09-27T15:00:00+00:00"}
+weather: {preset: clear}
+
+population:
+  hero:
+    - id: worker_1
+      role: worker
+      body: {height_m: 1.75, skin_tone: 6, sex_presentation: f, age_band: 40-60}
+      outfit: {top: polo, outer: hi_vis_vest, bottom: chinos, headwear: hardhat}
+      gait: {style: normal, speed_mps: 1.2}
+      intent:
+        - {type: transit, from: spawn.sub_worker, to: zone.substation}
+        # authorised, stationary in the restricted zone -- the hard negative
+        # a naive zone_intrusion rule would otherwise fire on.
+        - {type: commute_wait, zone: zone.substation, dur_s: 6, activity: idle}
+
+    - id: intruder_climb
+      role: intruder
+      identity: {group: cell_1}
+      outfit: {top: dark_hoodie, bottom: dark_cargo, headwear: balaclava,
+               colours: {top: "#111111", bottom: "#151515"}}
+      gait: {style: brisk, speed_mps: 1.5}
+      intent:
+        - {type: transit, from: spawn.fence_climb, to: zone.fence_north}
+        - {type: fence_climb, segment: fence_seg_12, climb_s: 3}
+        - {type: transit, to: exit.west, gait: {style: run}}
+
+    - id: intruder_zone
+      role: intruder
+      identity: {group: cell_2}
+      outfit: {top: dark_jacket, bottom: jeans}
+      gait: {style: normal, speed_mps: 1.3}
+      intent:
+        - {type: transit, from: spawn.sub_intrusion, to: zone.substation}
+        - {type: zone_intrusion, zone: zone.substation, dur_s: 3}
+        - {type: camera_tamper, camera: cam_sub, kind: cover, dur_s: 2}
+
+anomaly_injector: {enabled: false}
+output:
+  modalities: [rgb]
+  gt: [mot, events, world_parquet, calib]
+  degrade_profiles: [clean, cctv_480p]

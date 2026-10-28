@@ -1,0 +1,25 @@
+id: border_fence
+engine_map: /Game/SurvSim/Maps/BorderFence_400m
+lat_lon: [31.75, -106.48]
+units: m
+nav: {source: ue_navmesh}
+zones:
+  - {id: zone.outside, tag: public, polygon: [[-200, 5], [200, 5], [200, 120], [-200, 120]]}
+  - {id: zone.fence_line, tag: perimeter_fence, polygon: [[-200, -1], [200, -1], [200, 1], [-200, 1]]}
+  - {id: zone.sector_3, tag: restricted, polygon: [[-200, -1], [200, -1], [200, -120], [-200, -120]], allowed_roles: [guard]}
+  - {id: zone.inside_sector_3, tag: restricted, polygon: [[-60, -5], [60, -5], [60, -40], [-60, -40]], allowed_roles: [guard]}
+  - {id: zone.center, tag: public, polygon: [[-20, 30], [20, 30], [20, 70], [-20, 70]]}
+  - {id: zone.gate_A, tag: gate, polygon: [[-10, 50], [10, 50], [10, 65], [-10, 65]]}
+  - {id: zone.blindspot_A, tag: blindspot, polygon: [[150, 20], [170, 20], [170, 40], [150, 40]]}
+routes:
+  - {id: route.fence_walk, waypoints: [[-180, -3], [180, -3], [-180, -3]]}
+spawn_points:
+  - {id: spawn.east, pos: [190.0, 60.0, 0.0]}
+exits:
+  - {id: exit.tree_line, pos: [-40, 110, 0]}
+  - {id: exit.west, pos: [-190.0, 60.0, 0.0]}
+props:
+  - {id: fence_seg_12, type: fence_panel, pos: [-25, 0, 0], length_m: 3, cuttable: true}
+  - {id: fence_seg_13, type: fence_panel, pos: [-22, 0, 0], length_m: 3, cuttable: true}
+  - {id: tower_1, type: camera_mount, pos: [0, 0, 12], reachable_height_m: 99}
+lighting: {floodlights: [{pos: [0, 0, 10], lux_at_ground: 20, schedule: dusk_to_dawn}]}

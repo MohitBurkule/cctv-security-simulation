@@ -1,0 +1,35 @@
+# Same site as showcase_intrusion, rendered three times by tools/render_run.py
+# at different `time_of_day.start` values (15:00 day / 18:30 dusk / 23:00 night)
+# to show the IR-cut switch look. `render_run.py --scenario showcase_daynight
+# --time-override <ISO8601>` overrides time_of_day.start per invocation; render
+# each of the three times as a separate ~5 s clip into out/showcase/showcase_daynight/<slot>/.
+schema_version: 1
+name: showcase_daynight
+seed: 802
+duration_s: 5
+fps: 5
+engine: unreal
+environment: !include ../environments/border_fence.yaml
+cameras:
+  - {id: cam_01, type: fixed_bullet, mount: {pos: [-20, 3, 5], yaw: 90, pitch: -10}, optics: {hfov_deg: 45},
+     capture: {res: [1280, 720], fps: 5, night_mode: auto_ir}}
+  - {id: cam_02, type: fixed_bullet, mount: {pos: [20, 3, 5], yaw: -90, pitch: -10}, optics: {hfov_deg: 45},
+     capture: {res: [1280, 720], fps: 5, night_mode: auto_ir}}
+time_of_day: {start: "2026-09-27T15:00:00+00:00"}   # slot 1: day. dusk=18:30, night=23:00
+weather: {preset: clear}
+population:
+  background: {count: 0}
+  hero:
+    - id: guard_1
+      role: guard
+      outfit: {top: uniform_shirt, outer: hi_vis_jacket, bottom: uniform_trousers, headwear: cap}
+      intent: [{type: worker_patrol, route: route.fence_walk, period_s: 10}]
+    - id: passerby_1
+      role: civilian
+      outfit: {top: jacket, bottom: jeans}
+      intent: [{type: commute_wait, zone: zone.gate_A, dur_s: 5}]
+anomaly_injector: {enabled: false}
+output:
+  modalities: [rgb]
+  gt: [mot, world_parquet, events, calib]
+  degrade_profiles: [clean, cctv_720p]

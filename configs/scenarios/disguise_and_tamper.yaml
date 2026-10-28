@@ -1,0 +1,126 @@
+# Exercises the capabilities that make this simulator different from a dataset dump:
+#   - an appearance change performed inside a camera blind spot (cross-epoch ReID)
+#   - a PTZ camera on patrol, so coverage is time-varying rather than fixed
+#   - a camera tamper that blinds a camera mid-run
+#   - hostile reconnaissance, fence probing and a zone intrusion
+#   - procedurally generated hard negatives that dwell exactly as long as the loiterer
+schema_version: 1
+name: disguise_and_tamper
+seed: 11
+duration_s: 240
+fps: 10
+engine: mock
+
+environment:
+  id: compound
+  zones:
+    - {id: zone.gate_A, tag: gate, polygon: [[10, -4], [18, -4], [18, 4], [10, 4]]}
+    - {id: zone.yard, tag: public, polygon: [[-30, -30], [30, -30], [30, 30], [-30, 30]]}
+    - {id: zone.substation, tag: restricted, polygon: [[-28, 10], [-16, 10], [-16, 24], [-28, 24]],
+       allowed_roles: [worker, guard]}
+    - {id: zone.fence_north, tag: perimeter_fence, polygon: [[-30, 27], [30, 27], [30, 29], [-30, 29]]}
+    # Verified unobserved by every camera in this rig (`survsim rig` reports it as a
+    # blind region). The outfit change has to happen somewhere genuinely unseen,
+    # otherwise the cross-epoch ReID test is measuring nothing.
+    - {id: zone.blindspot_A, tag: blindspot, polygon: [[23, 18], [30, 18], [30, 25], [23, 25]]}
+  spawn_points:
+    - {id: spawn.north, pos: [0.0, 26.0, 0.0]}
+    - {id: spawn.east, pos: [28.0, 0.0, 0.0]}
+  exits:
+    - {id: exit.south, pos: [0.0, -28.0, 0.0]}
+    - {id: exit.west, pos: [-28.0, 0.0, 0.0]}
+  props:
+    - {id: fence_seg_12, type: fence_panel, pos: [-6.0, 28.0, 0.0], length_m: 3, cuttable: true}
+    - {id: door.substation, type: door, pos: [-22.0, 10.0, 0.0]}
+
+cameras:
+  - id: cam_gate
+    type: fixed_bullet
+    mount: {pos: [22.0, -10.0, 4.5], yaw: 135, pitch: -20}
+    optics: {hfov_deg: 70}
+    capture: {res: [1920, 1080], fps: 10}
+  - id: cam_yard
+    type: dome
+    mount: {pos: [-20.0, -18.0, 5.0], yaw: 60, pitch: -18}
+    optics: {hfov_deg: 95}
+    capture: {res: [1280, 720], fps: 10}
+  - id: cam_sub
+    type: fixed_bullet
+    mount: {pos: [-10.0, 20.0, 4.0], yaw: 180, pitch: -15}
+    optics: {hfov_deg: 60}
+    capture: {res: [1920, 1080], fps: 10}
+    # Sprayed 150 s in: everything after that is a blind camera, and the ground
+    # truth must stop reporting boxes for it.
+    tamper: [{t: 150, kind: spray}]
+  - id: cam_ptz
+    type: ptz
+    mount: {pos: [0.0, 0.0, 9.0], yaw: 0, pitch: -25}
+    optics: {hfov_deg: [3.0, 60]}
+    capture: {res: [1920, 1080], fps: 10}
+    ptz:
+      speed_dps: 40
+      patrol:
+        - {preset: gate, dwell_s: 20}
+        - {preset: fence, dwell_s: 20}
+        - {preset: substation, dwell_s: 20}
+    presets:
+      gate:       {yaw: -10, pitch: -22, hfov_deg: 30}
+      fence:      {yaw: 90,  pitch: -18, hfov_deg: 35}
+      substation: {yaw: 150, pitch: -20, hfov_deg: 30}
+
+population:
+  hero:
+    - id: intruder_a
+      role: intruder
+      identity: {group: cell_1}
+      body: {height_m: 1.83, shoulder_w: 0.48, bmi_class: athletic, skin_tone: 4,
+             sex_presentation: m, age_band: 25-40}
+      outfit: {top: hoodie, outer: rain_jacket, bottom: cargo, shoes: boots, headwear: beanie,
+               colours: {top: "#2b2b2b", outer: "#0b3d91", bottom: "#4b4b3f"}}
+      accessories: [backpack_small]
+      gait: {style: normal, speed_mps: 1.4}
+      adversarial: {camera_awareness: 0.9, face_hiding: 0.7}
+      intent:
+        - {type: transit, from: spawn.east, to: zone.gate_A}
+        - {type: recon, targets: [cam_gate, cam_sub, door.substation], dwell_s: 6, standoff_m: 7}
+        - {type: loiter, zone: zone.gate_A, dur_s: 30, activity: pace, radius_m: 3}
+        # Disappears into the blind spot and comes out looking like someone else.
+        - {type: outfit_change, in_zone: zone.blindspot_A, dur_s: 6,
+           delta: {outer: none, headwear: cap, colours: {top: "#d8d8d0"},
+                   gait: {style: slow}, face: {mask: true}}}
+        - {type: perimeter_probe, segment: fence_seg_12, walk_along_m: 8}
+        - {type: camera_tamper, camera: cam_sub, kind: spray, dur_s: 4}
+        - {type: wrong_zone_entry, zone: zone.substation, dur_s: 25}
+        - {type: transit, to: exit.west, gait: {style: brisk}}
+
+    - id: worker_1
+      role: worker
+      body: {height_m: 1.75, skin_tone: 6, sex_presentation: f, age_band: 40-60}
+      outfit: {top: polo, outer: hi_vis_vest, bottom: chinos, headwear: hardhat}
+      gait: {style: normal, speed_mps: 1.2}
+      intent:
+        - {type: transit, from: spawn.north, to: zone.substation}
+        # Authorised, stationary, crouched next to a sensitive asset for minutes:
+        # the textbook false positive for a tamper detector.
+        - {type: commute_wait, zone: zone.substation, dur_s: 90, activity: idle}
+        - {type: transit, to: exit.south}
+
+    - id: tailgater_1
+      role: intruder
+      body: {height_m: 1.69, skin_tone: 8, sex_presentation: m, age_band: 18-25}
+      outfit: {top: shirt, outer: light_jacket, bottom: jeans}
+      gait: {style: brisk, speed_mps: 1.5}
+      intent:
+        - {type: transit, from: spawn.north, to: zone.yard}
+        - {type: tailgating, target: worker_1, door: door.substation, gap_m: 1.2}
+        - {type: transit, to: exit.west}
+
+  generators:
+    # Same dwell, innocent intent. Precision is meaningless without these.
+    - {template: commute_wait_negative, count: 4, zones: [zone.gate_A], dur_s: [30, 60]}
+    - {template: passer_by, count: 3, zones: [zone.yard]}
+    - {template: loiterer, count: 1, zones: [zone.gate_A], dur_s: [40, 70]}
+
+output:
+  modalities: [rgb]
+  gt: [mot, events, world_parquet, calib, identities, sensors]

@@ -1,0 +1,40 @@
+# Background flickering/blinking light source (flashing beacon or faulty lamp).
+# The scene export (survsim/generator/layout.py + survsim/export/env_plan.py) has
+# no scripted-intensity-over-time light track today -- lights are placed once per
+# render and held static for the shot. Two ways to get the flicker into the frame:
+#   (a) [preferred, if time allows] add a point light "beacon_1" and call
+#       survsim_scene.light(..., intensity=<value>) once per short sub-clip,
+#       re-rendering 2-3 alternating-intensity mini-clips and concatenating them
+#       (real engine flicker, coarse cadence).
+#   (b) [emulated, default] leave a single static beacon light in the scene and
+#       apply the AE-flicker step already in survsim/sensors/degrade.py as a
+#       post-process on the rendered frames. This is NOT a real light-intensity
+#       change in the render -- mark any deliverable built this way "emulated"
+#       in docs/research/95_SHOWCASE_RENDERS.md.
+schema_version: 1
+name: showcase_flicker
+seed: 804
+duration_s: 6
+fps: 5
+engine: unreal
+environment: !include ../environments/border_fence.yaml
+cameras:
+  - {id: cam_01, type: fixed_bullet, mount: {pos: [-20, 3, 5], yaw: 90, pitch: -10}, optics: {hfov_deg: 45},
+     capture: {res: [1280, 720], fps: 5}}
+time_of_day: {start: "2026-09-27T22:30:00+00:00"}
+weather: {preset: clear}
+extra_lights:
+  - {id: beacon_1, type: point, pos: [15, -5, 4], colour: "#ff2222", intensity_lm: 8000,
+     flicker: {mode: emulated_post, note: "see file header: real per-frame intensity script not available in export today"}}
+population:
+  background: {count: 0}
+  hero:
+    - id: guard_1
+      role: guard
+      outfit: {top: uniform_shirt, outer: hi_vis_jacket, bottom: uniform_trousers, headwear: cap}
+      intent: [{type: worker_patrol, route: route.fence_walk, period_s: 10}]
+anomaly_injector: {enabled: false}
+output:
+  modalities: [rgb]
+  gt: [mot, world_parquet, events, calib]
+  degrade_profiles: [clean, cctv_720p_flicker_emulated]

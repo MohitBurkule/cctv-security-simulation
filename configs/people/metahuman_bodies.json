@@ -1,0 +1,24 @@
+{
+ "_doc": "Baked offline MetaHuman bodies (scripts/ue/mh_bake.py) in the production project, docs/12 'MetaHuman route'. height_cm = body-mesh bounds z / 0.83 (the head is the separate face mesh; ratio measured 2026-09-25). walk_speed_mps is the in-place walk loop's stance-foot ground speed at rate 1.0 (1.83 m/s, measured by AnimPose FK over the 4 s loop, 8 steps) normalised to a 1.75 m person from a 1.60 m reference skeleton. xmax_cm = body bounds half-width along X (A-pose arm span, for the painted-clothing sleeve mask). The baked ChaosCloth outfit (only MHB02 has one) is off unless SURVSIM_MH_GARMENT=1: painted clothing is used for everyone.",
+ "MHB01": {
+  "body_bounds_z_cm": 131.1,
+  "xmax_cm": 45.7
+ },
+ "MHB02": {
+  "body_bounds_z_cm": 159.9,
+  "xmax_cm": 55.2
+ },
+ "MHB03": {
+  "body_bounds_z_cm": 130.2,
+  "xmax_cm": 45.8
+ },
+ "_common": {
+  "kind": "metahuman",
+  "walk": "/MetaHumanCharacter/Optional/Animation/UEFNAnimPreset/Locomotion/AS_MH_Neutral_Walk_Loop_F",
+  "idle": "/MetaHumanCharacter/Optional/Animation/UEFNAnimPreset/Locomotion/AS_MH_Neutral_Stand_Idle_Loop",
+  "walk_len_s": 4.0,
+  "clip_ground_speed_mps": 1.83,
+  "clip_ref_stature_m": 1.6,
+  "yaw_offset": -90.0
+ }
+}
